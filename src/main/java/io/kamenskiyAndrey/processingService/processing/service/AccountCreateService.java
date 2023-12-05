@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public class AccountCreateService {
     private final AccountRepository repository;
 
     @Transactional
-    public AccountEntity createNewAccount(NewAccountDTO dto){
+    public AccountEntity createNewAccount(NewAccountDTO dto) {
         //заполняем Entity объект данными из DTO
         var account = new AccountEntity();
         account.setCurrencyCode(dto.getCurrencyCode());
@@ -26,5 +27,21 @@ public class AccountCreateService {
         //Сохраняем объект в базу
         var entityAccountObjectInBase = repository.save(account);
         return entityAccountObjectInBase;
+    }
+
+    @Transactional
+    public AccountEntity addMoneyToAccount(String uid, Long accountId, BigDecimal money) {
+        Optional<AccountEntity> accEntity = repository.findById(accountId);
+        AccountEntity account = accEntity.orElseThrow(() -> new IllegalArgumentException("Account with" +
+                " id = " + accountId + " is not found"));
+        BigDecimal addMoneyToAccount = account.getBalance().add(money);
+         account.setBalance(addMoneyToAccount);
+
+//        Optional<BigDecimal> optionalBalance = accEntity.map(acc -> {
+//            var balance = acc.getBalance().add(money);
+//            return balance;
+//        });
+        return account;
+
     }
 }

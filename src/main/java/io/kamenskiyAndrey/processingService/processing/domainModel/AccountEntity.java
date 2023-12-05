@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "ACCOUNT")
 public class AccountEntity {
 
     @Id
@@ -26,6 +27,6 @@ public class AccountEntity {
     @Column(name = "CURRENCY_CODE", length = 3, nullable = false)
     private String currencyCode;
 
-    @Column(name = "CURRENCY_CODE", length = 3, nullable = false)
+    @Column(name = "BALANCE", length = 3, nullable = false)
     private BigDecimal balance;
 }
