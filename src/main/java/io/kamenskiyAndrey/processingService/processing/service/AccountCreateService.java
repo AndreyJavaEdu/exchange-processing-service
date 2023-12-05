@@ -16,6 +16,7 @@ public class AccountCreateService {
 
     private final AccountRepository repository;
 
+    //Метод создания счета
     @Transactional
     public AccountEntity createNewAccount(NewAccountDTO dto) {
         //заполняем Entity объект данными из DTO
@@ -29,6 +30,7 @@ public class AccountCreateService {
         return entityAccountObjectInBase;
     }
 
+    //Метод пополнения счета
     @Transactional
     public AccountEntity addMoneyToAccount(String uid, Long accountId, BigDecimal money) {
         Optional<AccountEntity> accEntity = repository.findById(accountId);
