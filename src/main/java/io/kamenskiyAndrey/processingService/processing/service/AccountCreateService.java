@@ -35,13 +35,16 @@ public class AccountCreateService {
         AccountEntity account = accEntity.orElseThrow(() -> new IllegalArgumentException("Account with" +
                 " id = " + accountId + " is not found"));
         BigDecimal addMoneyToAccount = account.getBalance().add(money);
-         account.setBalance(addMoneyToAccount);
+        account.setBalance(addMoneyToAccount);
 
-//        Optional<BigDecimal> optionalBalance = accEntity.map(acc -> {
+// Второй способ реализации метода
+//        var optionalBalance = accEntity.map(acc -> {
 //            var balance = acc.getBalance().add(money);
-//            return balance;
+//            acc.setBalance(balance);
+//            return repository.save(acc);
 //        });
-        return account;
-
+//        AccountEntity account = optionalBalance.orElseThrow(() -> new IllegalArgumentException("Account with" +
+//                " id = " + accountId + " is not found"));
+        return repository.save(account);
     }
 }
