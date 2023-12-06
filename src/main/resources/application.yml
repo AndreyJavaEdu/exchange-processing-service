@@ -21,3 +21,7 @@ spring:
     url: jdbc:postgresql://localhost:5433/processing
     user: postgres
     password: password
+
+service:
+  currency:
+    url: http://localhost:8084
