@@ -3,6 +3,8 @@ package io.kamenskiyAndrey.processingService.processing.service;
 import io.kamenskiyAndrey.processingService.processing.domainModel.AccountEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -21,6 +23,7 @@ public class ExchangerService {
     если у счета переводчика сумма не в рублях, а у счета получателя в рублях,
     если у счета переводчика и у счета получателя суммы не в рублях.
      */
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public BigDecimal exchangeCurrency(String uuid, Long fromAccount, Long toAccount, BigDecimal ammount) {
         AccountEntity source = service.getAccountById(fromAccount); //получаем объект счета котрый будет отправлять сумму на другой счет
         AccountEntity target = service.getAccountById(toAccount); // объект счета который будет получать деньги с другого счета
