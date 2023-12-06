@@ -5,7 +5,10 @@ import io.kamenskiyAndrey.processingService.processing.dto.NewAccountDTO;
 import io.kamenskiyAndrey.processingService.processing.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -31,7 +34,7 @@ public class AccountCreateService {
     }
 
     //Метод пополнения счета
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
     public AccountEntity addMoneyToAccount(String uid, Long accountId, BigDecimal money) {
         Optional<AccountEntity> accEntity = repository.findById(accountId);
         AccountEntity account = accEntity.orElseThrow(() -> new IllegalArgumentException("Account with" +
@@ -48,5 +51,13 @@ public class AccountCreateService {
 //        AccountEntity account = optionalBalance.orElseThrow(() -> new IllegalArgumentException("Account with" +
 //                " id = " + accountId + " is not found"));
         return repository.save(account);
+    }
+
+    //Метод получения счета по идентификатору
+    @Transactional
+    public AccountEntity getAccountById(Long accountId){
+        AccountEntity account = repository.findById(accountId).orElseThrow(() -> new IllegalArgumentException("Account with" +
+                " id = " + accountId + " is not found"));
+        return account;
     }
 }
