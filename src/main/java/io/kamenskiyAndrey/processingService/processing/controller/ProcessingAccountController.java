@@ -8,6 +8,8 @@ import io.kamenskiyAndrey.processingService.processing.service.AccountCreateServ
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/processing")
@@ -22,6 +24,11 @@ public class ProcessingAccountController {
     @PutMapping(path = "/account/{id}")
     public AccountEntity putMoney(@PathVariable(value = "id") Long accountId, @RequestBody PutMoneyToAccountDTO dto){
        return service.addMoneyToAccount(dto.getUid(), accountId, dto.getAmountOfMoney());
+    }
+
+    @PutMapping(path = "/account/{uid}")
+    public BigDecimal exchangeCurrency (@PathVariable(value = "uid") String uid){
+
     }
 }
 
